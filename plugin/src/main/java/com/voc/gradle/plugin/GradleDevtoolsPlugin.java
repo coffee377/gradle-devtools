@@ -5,15 +5,23 @@ package com.voc.gradle.plugin;
 
 import org.gradle.api.Project;
 import org.gradle.api.Plugin;
+import org.gradle.api.file.ConfigurableFileTree;
+import org.gradle.api.model.ObjectFactory;
+
+import javax.inject.Inject;
 
 /**
  * A simple 'hello world' plugin.
  */
 public class GradleDevtoolsPlugin implements Plugin<Project> {
+    ConfigurableFileTree fileTree;
+
+    @Inject
+    public GradleDevtoolsPlugin(ObjectFactory objectFactory) {
+        fileTree = objectFactory.fileTree();
+    }
+
     public void apply(Project project) {
-        // Register a task
-        project.getTasks().register("greeting", task -> {
-            task.doLast(s -> System.out.println("Hello from plugin 'com.voc.gradle.plugin.greeting'"));
-        });
+        fileTree.from("");
     }
 }
