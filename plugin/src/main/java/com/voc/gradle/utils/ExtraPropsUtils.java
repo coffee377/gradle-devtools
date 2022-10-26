@@ -2,6 +2,7 @@ package com.voc.gradle.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gradle.api.Project;
+import org.gradle.api.initialization.Settings;
 import org.gradle.api.plugins.ExtraPropertiesExtension;
 
 /**
@@ -41,8 +42,17 @@ public class ExtraPropsUtils {
         return getValue(extraProperties, keyName, defaultValue);
     }
 
+    public static Object getValue(Settings settings, String keyName, Object defaultValue) {
+        ExtraPropertiesExtension extraProperties = settings.getExtensions().getExtraProperties();
+        return getValue(extraProperties, keyName, defaultValue);
+    }
+
     public static String getStringValue(Project project, String keyName, String defaultValue) {
         return (String) getValue(project, keyName, defaultValue);
+    }
+
+    public static String getStringValue(Settings settings, String keyName, String defaultValue) {
+        return (String) getValue(settings, keyName, defaultValue);
     }
 
     public static boolean getBooleanValue(Project project, String keyName, boolean defaultValue) {

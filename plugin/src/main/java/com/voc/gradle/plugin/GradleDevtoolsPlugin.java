@@ -3,10 +3,15 @@
  */
 package com.voc.gradle.plugin;
 
+import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.gradle.api.Plugin;
 import org.gradle.api.file.ConfigurableFileTree;
+import org.gradle.api.internal.file.DefaultFileOperations;
+import org.gradle.api.internal.file.FileLookup;
+import org.gradle.api.internal.file.FileOperations;
 import org.gradle.api.model.ObjectFactory;
+import org.gradle.internal.service.ServiceRegistry;
 
 import javax.inject.Inject;
 
@@ -15,13 +20,28 @@ import javax.inject.Inject;
  */
 public class GradleDevtoolsPlugin implements Plugin<Project> {
     ConfigurableFileTree fileTree;
+    FileOperations fileOperations;
 
     @Inject
     public GradleDevtoolsPlugin(ObjectFactory objectFactory) {
+
+        ServiceRegistry services = null;
+        FileLookup fileLookup = services.get(FileLookup.class);
+        DefaultFileOperations.createSimple(null, null, services);
         fileTree = objectFactory.fileTree();
     }
 
     public void apply(Project project) {
-        fileTree.from("");
+//        project.getGradle().getSharedServices()
+        ConfigurableFileTree configurableFileTree = fileOperations.fileTree(project.getProjectDir());
+//        configurableFileTree.
+//        fileTree.from("");
     }
+
+    private ConfigurableFileTree fileTree(Object baseDir, Action<ConfigurableFileTree> action) {
+        ConfigurableFileTree configurableFileTree = fileOperations.fileTree(baseDir);
+        action.execute(configurableFileTree);
+        return configurableFileTree;
+    }
+
 }
