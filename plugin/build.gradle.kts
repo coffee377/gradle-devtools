@@ -4,9 +4,19 @@ plugins {
     `java-library`
     `maven-publish`
     id("org.jetbrains.kotlin.jvm")
+    id("com.gradle.plugin-publish") version "1.0.0"
 }
 
 group = "com.voc"
+
+configurations {
+    all {
+        resolutionStrategy {
+//            cacheDynamicVersionsFor(0, TimeUnit.MINUTES)
+//            cacheChangingModulesFor(0, TimeUnit.MINUTES)
+        }
+    }
+}
 
 sourceSets {
 //    create("mongodb") {
@@ -43,21 +53,6 @@ dependencies {
 //    mongodbSupportImplementation("org.mongodb:mongodb-driver-sync:3.9.1")
 }
 
-publishing {
-    repositories {
-        maven {
-            name = "local"
-            url = uri("${rootProject.buildDir}/publications/repos")
-        }
-    }
-
-//    publications {
-//        create<MavenPublication>("gradleDevtools") {
-//            from(components["java"])
-//        }
-//    }
-}
-
 testing {
     suites {
         // Configure the built-in test suite
@@ -87,13 +82,32 @@ gradlePlugin {
     plugins {
         create("Init") {
             id = "com.voc.init"
+            displayName = "Init"
+            description = "initial configuration"
             implementationClass = "com.voc.gradle.plugin.GradleInitPlugin"
         }
         create("AutoModule") {
             id = "com.voc.auto"
+            displayName = "AutoModule"
+            description = "auto include project"
             implementationClass = "com.voc.gradle.plugin.AutoModulePlugin"
         }
     }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "local"
+            url = uri("${rootProject.buildDir}/publications/repos")
+        }
+    }
+}
+
+pluginBundle {
+    website = "https://github.com/coffee377/gradle-devtools"
+    vcsUrl = "https://github.com/coffee377/gradle-devtools.git"
+    tags = listOf("devtools", "auto", "include")
 }
 
 //gradlePlugin.testSourceSets(sourceSets["functionalTest"])
@@ -110,8 +124,20 @@ tasks {
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
 
+    withType<Javadoc>() {
+        options.encoding = "UTF-8"
+        if (options is StandardJavadocDocletOptions) {
+            val standardJavadocDocletOptions = options as StandardJavadocDocletOptions
+            standardJavadocDocletOptions.charSet("UTF-8")
+            standardJavadocDocletOptions.tags?.add("email")
+            standardJavadocDocletOptions.tags?.add("time")
+        }
+    }
+
     withType<JavaCompile> {
         options.release.set(8)
+        options.encoding = "UTF-8"
+//        options.compilerArgs.add("-parameters")
     }
 
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
@@ -119,6 +145,6 @@ tasks {
     }
 
     withType<Delete> {
-        delete("out", "build","${rootProject.buildDir}")
+        delete("out", "build", "${rootProject.buildDir}")
     }
 }

@@ -21,7 +21,7 @@ public class DefaultDevToolsSettingsExtension implements DevToolsSettingsExtensi
     }
 
     @Override
-    public void automatically(boolean include) {
+    public void setAutomatically(boolean include) {
         automatically.set(include);
     }
 }

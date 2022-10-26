@@ -46,6 +46,7 @@ open class AutoModulePlugin @Inject constructor(objectFactory: ObjectFactory) : 
             id("org.asciidoctor.jvm.epub").version("3.3.2")
             id("com.github.shalousun.smart-doc").version("2.6.0-release")
             id("com.voc.auto").version("0.1.0")
+            id("com.gradle.plugin-publish").version("1.0.0")
             id("org.springframework.boot").version("2.5.0.RELEASE")
             id("io.spring.dependency-management").version("1.0.11.RELEASE")
         }

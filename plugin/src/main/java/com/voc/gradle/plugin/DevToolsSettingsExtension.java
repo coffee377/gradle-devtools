@@ -13,10 +13,12 @@ public interface DevToolsSettingsExtension {
 
     /**
      * 自动包含项目
+     *
+     * @param include 是否包含
      */
-    void automatically(boolean include);
+    void setAutomatically(boolean include);
 
-    default String localRepositoryPath(){
+    default String localRepositoryPath() {
         return null;
     }
 
