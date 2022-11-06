@@ -1,8 +1,6 @@
 plugins {
     idea
-    `java-gradle-plugin`
     `java-library`
-    `maven-publish`
     id("org.jetbrains.kotlin.jvm")
     id("com.gradle.plugin-publish") version "1.0.0"
 }
@@ -10,6 +8,27 @@ plugins {
 group = "com.voc"
 
 configurations {
+    val annotationProcessor = configurations.getByName(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME)
+    val testAnnotationProcessor = configurations.getByName(JavaPlugin.TEST_ANNOTATION_PROCESSOR_CONFIGURATION_NAME)
+    val compileOnly = configurations.getByName(JavaPlugin.COMPILE_ONLY_CONFIGURATION_NAME)
+    val runtimeOnly = configurations.getByName(JavaPlugin.RUNTIME_ONLY_CONFIGURATION_NAME)
+
+    testAnnotationProcessor {
+        extendsFrom(annotationProcessor)
+    }
+
+    compileOnly {
+        extendsFrom(annotationProcessor)
+    }
+
+    testCompileOnly {
+        extendsFrom(compileOnly, testAnnotationProcessor)
+    }
+
+    testRuntimeOnly {
+        extendsFrom(runtimeOnly)
+    }
+
     all {
         resolutionStrategy {
 //            cacheDynamicVersionsFor(0, TimeUnit.MINUTES)
@@ -19,6 +38,9 @@ configurations {
 }
 
 sourceSets {
+    main {
+
+    }
 //    create("mongodb") {
 //        java {
 //            srcDir("src/mongodb/java")
@@ -46,11 +68,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
-//    implementation("org.junit.jupiter:junit-jupiter:5.7.2")
-//    implementation("org.springframework.security:spring-security-oauth2-authorization-server:0.3.2")
-//    mongodbSupportImplementation("org.mongodb:mongodb-driver-sync:3.9.1")
+
+    implementation("org.asciidoctor:asciidoctor-gradle-jvm:3.3.2")
+    implementation("org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.3.2")
+    implementation("org.springframework:spring-core:5.3.23")
 }
 
 testing {
@@ -82,17 +104,37 @@ gradlePlugin {
     plugins {
         create("Init") {
             id = "com.voc.init"
+            implementationClass = "io.github.coffee377.convention.GradleInitPlugin"
             displayName = "Init"
             description = "initial configuration"
-            implementationClass = "com.voc.gradle.plugin.GradleInitPlugin"
         }
-        create("AutoModule") {
+//        create("devtools") {
+//            id = "io.github.coffee377.devtools"
+//            implementationClass = "io.github.coffee377.convention.DevToolsPlugin"
+//            displayName = "devtools"
+//            description = "initial configuration"
+//        }
+        create("AutoIncludeProject") {
             id = "com.voc.auto"
-            displayName = "AutoModule"
+            implementationClass = "com.voc.gradle.plugin.AutoIncludeProjectPlugin"
+            displayName = "Auto Include Project"
             description = "auto include project"
-            implementationClass = "com.voc.gradle.plugin.AutoModulePlugin"
         }
     }
+}
+
+pluginBundle {
+    website = "https://github.com/coffee377/gradle-devtools"
+    vcsUrl = "https://github.com/coffee377/gradle-devtools.git"
+
+    description = "Greetings from here!"
+
+    tags = listOf("devtools", "auto", "include")
+
+    pluginTags = mapOf(
+        "Init" to listOf(""),
+        "AutoModule" to listOf("")
+    )
 }
 
 publishing {
@@ -104,22 +146,8 @@ publishing {
     }
 }
 
-pluginBundle {
-    website = "https://github.com/coffee377/gradle-devtools"
-    vcsUrl = "https://github.com/coffee377/gradle-devtools.git"
-    tags = listOf("devtools", "auto", "include")
-}
-
-//gradlePlugin.testSourceSets(sourceSets["functionalTest"])
-
-tasks.named<Task>("check") {
-    // Include functionalTest as part of the check lifecycle
-//    dependsOn(testing.suites.named("functionalTest"))
-}
-
 tasks {
     withType<Jar> {
-//        archiveBaseName.set("gradle-plugin")
         /* 重复文件策略，排除 */
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
@@ -129,6 +157,7 @@ tasks {
         if (options is StandardJavadocDocletOptions) {
             val standardJavadocDocletOptions = options as StandardJavadocDocletOptions
             standardJavadocDocletOptions.charSet("UTF-8")
+            standardJavadocDocletOptions.addStringOption("Xdoclint:none","-quiet")
             standardJavadocDocletOptions.tags?.add("email")
             standardJavadocDocletOptions.tags?.add("time")
         }

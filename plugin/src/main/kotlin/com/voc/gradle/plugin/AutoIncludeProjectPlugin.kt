@@ -7,18 +7,54 @@ import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.initialization.Settings
 import org.gradle.api.internal.file.FileOperations
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 import javax.inject.Inject
+
+/**
+ * @author WuYujie
+ * @email coffee377@dingtalk.com
+ * @time 2022/11/06 10:21
+ */
+
+open class DefaultAutoIncludeProjectExtension(objectFactory: ObjectFactory) : AutoIncludeProjectExtension {
+
+    private val enabled: Property<Boolean>
+
+    private val patterns: MutableSet<String>
+
+    init {
+        enabled = objectFactory.property(Boolean::class.java).value(true)
+        patterns = HashSet()
+    }
+
+    override fun isEnable(): Boolean {
+        return enabled.get()
+    }
+
+    override fun setEnable(enable: Boolean) {
+        enabled.set(enable)
+    }
+
+    override fun getExcludeProject(): MutableSet<String> {
+        return patterns
+    }
+
+    override fun exclude(vararg pattern: String) {
+        patterns.addAll(pattern)
+    }
+
+}
 
 /**
  * @author  WuYujie
  * @email  coffee377@dingtalk.com
  * @time  2022/10/23 21:11
  */
-open class AutoModulePlugin @Inject constructor(objectFactory: ObjectFactory) : Plugin<Settings> {
+class AutoIncludeProjectPlugin @Inject constructor(objectFactory: ObjectFactory) : Plugin<Settings> {
     private var objectFactory: ObjectFactory
     private var configurableFileTree: ConfigurableFileTree
-    private lateinit var settingsExtension: DevToolsSettingsExtension
     private lateinit var fileOperations: FileOperations
+
 
     init {
         this.objectFactory = objectFactory
@@ -29,13 +65,25 @@ open class AutoModulePlugin @Inject constructor(objectFactory: ObjectFactory) : 
 
         fileOperations = FileOperationUtils.fileOperationsFor(settings)
 
-        settingsExtension = settings.extensions.getByType(DevToolsSettingsExtension::class.java)
+        /* 创建扩展配置 */
+        settings.extensions.create(
+            AutoIncludeProjectExtension.NAME,
+            DefaultAutoIncludeProjectExtension::class.java,
+            objectFactory
+        )
 
         /* 配置插件仓库 */
         settings.pluginManagement.repositories.apply {
             maven { it.apply { url = uri("${settings.rootDir}/build/publications/repos") } }
             gradlePluginPortal()
             maven { it.apply { url = uri("https://repo.spring.io/plugins-release") } }
+        }
+
+
+        val versionCatalogs = settings.dependencyResolutionManagement.versionCatalogs
+        versionCatalogs.create("") {
+            it.version("", "")
+
         }
 
         /* 常用插件管理 */
@@ -45,18 +93,20 @@ open class AutoModulePlugin @Inject constructor(objectFactory: ObjectFactory) : 
             id("org.asciidoctor.jvm.pdf").version("3.3.2")
             id("org.asciidoctor.jvm.epub").version("3.3.2")
             id("com.github.shalousun.smart-doc").version("2.6.0-release")
-            id("com.voc.auto").version("0.1.0")
             id("com.gradle.plugin-publish").version("1.0.0")
             id("org.springframework.boot").version("2.5.0.RELEASE")
             id("io.spring.dependency-management").version("1.0.11.RELEASE")
         }
 
         /* 自动引入子项目 */
-        autoInclude(settings)
+        settings.gradle.settingsEvaluated {
+            autoInclude(it)
+        }
     }
 
     private fun autoInclude(settings: Settings) {
-        if (settingsExtension.isAutomatically.not()) return
+        val autoIncludeProjectExtension = settings.extensions.getByType(AutoIncludeProjectExtension::class.java)
+        if (autoIncludeProjectExtension.isEnable.not()) return
 
         val rootDir = settings.rootDir
 
@@ -67,9 +117,17 @@ open class AutoModulePlugin @Inject constructor(objectFactory: ObjectFactory) : 
             excludes?.let { exclude(it) }
         }
             .files
+            .asSequence()
             .filter { file -> !file.parentFile.relativeTo(rootDir).name.isNullOrEmpty() }
             .map { file -> ProjectInfo(rootDir, file) }.sorted()
-            .filter { info -> !Regex(".*(examples|restful|persist).*$").matches(info.name) }
+            .filter { projectInfo ->
+                val find = autoIncludeProjectExtension.excludeProject.map { it.toRegex() }
+                    .find {
+                        it.matches(input = projectInfo.name)
+                    }
+                find == null
+            }
+            .toList()
 
         projectInfos.forEach { settings.include(it.path) }
 
@@ -97,3 +155,4 @@ open class AutoModulePlugin @Inject constructor(objectFactory: ObjectFactory) : 
     private fun uri(path: Any) = fileOperations.uri(path)
 
 }
+

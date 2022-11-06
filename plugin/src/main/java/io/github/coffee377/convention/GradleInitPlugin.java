@@ -1,4 +1,4 @@
-package com.voc.gradle.plugin;
+package io.github.coffee377.convention;
 
 import lombok.extern.slf4j.Slf4j;
 import org.gradle.api.Plugin;
@@ -24,15 +24,15 @@ public class GradleInitPlugin implements Plugin<Gradle> {
     @Override
     public void apply(Gradle gradle) {
 
-        gradle.beforeSettings(settings -> {
-            settings.getExtensions().create(DevToolsSettingsExtension.NAME,
-                    DefaultDevToolsSettingsExtension.class, objectFactory);
-        });
-        gradle.settingsEvaluated(settings ->
-                settings.apply(objectConfigurationAction -> {
-                    objectConfigurationAction.plugin(AutoModulePlugin.class);
-                })
-        );
+//        gradle.beforeSettings(settings -> {
+//            settings.getExtensions().create(DevToolsSettingsExtension.NAME,
+//                    DefaultDevToolsSettingsExtension.class, objectFactory);
+//        });
+//        gradle.settingsEvaluated(settings ->
+//                settings.apply(objectConfigurationAction -> {
+//                    objectConfigurationAction.plugin(AutoModulePlugin.class);
+//                })
+//        );
     }
 
 
