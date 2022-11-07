@@ -1,1 +1,35 @@
-= gradle devtools plugin
+:source-highlighter: pygments
+:experimental:
+:toc:
+:icons: font
+
+= Gradle Devtools Plugin
+== Usage
+
+Add the plugin section in your settings.gradle.kts
+
+[source,kotlin]
+.settings.gradle.kts
+----
+import com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension
+
+pluginManagement {
+  plugins {
+    id("io.github.coffee377.auto-include") version "0.1.2" // <1>
+  }
+}
+
+plugins {
+  id("io.github.coffee377.auto-include") // <2>
+}
+
+configure<com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension> { // <3>
+   // isEnable = false // <4>
+   // exclude(".*persist$") // <5>
+}
+----
+<1> Introduce plug-ins
+<2> Use plug-ins
+<3> Configure the plug-in
+<4> Disable automatic inclusion of items
+<5> Exclude the specified item
