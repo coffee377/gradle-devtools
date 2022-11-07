@@ -5,7 +5,7 @@ plugins {
     id("com.gradle.plugin-publish") version "1.0.0"
 }
 
-group = "com.voc"
+group = "io.github.coffee377"
 
 configurations {
     val annotationProcessor = configurations.getByName(JavaPlugin.ANNOTATION_PROCESSOR_CONFIGURATION_NAME)
@@ -111,12 +111,6 @@ gradlePlugin {
         }
         create("AutoInclude") {
             id = "io.github.coffee377.auto-include"
-            implementationClass = "io.github.coffee377.convention.AutoIncludePlugin"
-            displayName = "Auto Include"
-            description = "auto include project for root project"
-        }
-        create("AutoIncludeInner") {
-            id = "com.voc.auto"
             implementationClass = "io.github.coffee377.convention.AutoIncludePlugin"
             displayName = "Auto Include"
             description = "auto include project for root project"
