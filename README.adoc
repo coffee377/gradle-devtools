@@ -1,9 +1,20 @@
-:source-highlighter: pygments
+= Gradle Devtools Plugin
+:source-highlighter: rouge
 :experimental:
 :toc:
+ifndef::env-github[]
 :icons: font
+endif::[]
+ifdef::env-github[]
+:status:
+:caution-caption: :fire:
+:important-caption: :exclamation:
+:note-caption: :paperclip:
+:tip-caption: :bulb:
+:warning-caption: :warning:
+:prs-welcome: image:https://img.shields.io/badge/PRs-welcome-brightgreen.svg[link=https://makeapullrequest.com]
+endif::[]
 
-= Gradle Devtools Plugin
 == Usage
 
 Add the plugin section in your settings.gradle.kts
@@ -28,6 +39,7 @@ configure<com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension> { // <3>
    // exclude(".*persist$") // <5>
 }
 ----
+
 <1> Introduce plug-ins
 <2> Use plug-ins
 <3> Configure the plug-in
