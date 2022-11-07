@@ -73,6 +73,7 @@ dependencies {
     implementation("org.asciidoctor:asciidoctor-gradle-jvm:3.3.2")
     implementation("org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.3.2")
     implementation("org.springframework:spring-core:5.3.23")
+    implementation("de.skuzzle:semantic-version:2.1.1")
 }
 
 testing {
@@ -82,7 +83,7 @@ testing {
             // Use JUnit Jupiter test framework
             useJUnitJupiter("5.7.2")
         }
-//
+
 //        // Create a new test suite
 //        val functionalTest by registering(JvmTestSuite::class) {
 //            dependencies {
@@ -102,23 +103,23 @@ testing {
 
 gradlePlugin {
     plugins {
-        create("Init") {
-            id = "com.voc.init"
-            implementationClass = "io.github.coffee377.convention.GradleInitPlugin"
-            displayName = "Init"
-            description = "initial configuration"
+        create("DevTools") {
+            id = "io.github.coffee377.devtools"
+            implementationClass = "io.github.coffee377.convention.DevToolsPlugin"
+            displayName = "devtools"
+            description = "quick and easy to use common functions"
         }
-//        create("devtools") {
-//            id = "io.github.coffee377.devtools"
-//            implementationClass = "io.github.coffee377.convention.DevToolsPlugin"
-//            displayName = "devtools"
-//            description = "initial configuration"
-//        }
-        create("AutoIncludeProject") {
+        create("AutoInclude") {
+            id = "io.github.coffee377.auto-include"
+            implementationClass = "io.github.coffee377.convention.AutoIncludePlugin"
+            displayName = "Auto Include"
+            description = "auto include project for root project"
+        }
+        create("AutoIncludeInner") {
             id = "com.voc.auto"
-            implementationClass = "com.voc.gradle.plugin.AutoIncludeProjectPlugin"
-            displayName = "Auto Include Project"
-            description = "auto include project"
+            implementationClass = "io.github.coffee377.convention.AutoIncludePlugin"
+            displayName = "Auto Include"
+            description = "auto include project for root project"
         }
     }
 }
@@ -127,13 +128,13 @@ pluginBundle {
     website = "https://github.com/coffee377/gradle-devtools"
     vcsUrl = "https://github.com/coffee377/gradle-devtools.git"
 
-    description = "Greetings from here!"
+//    description = "Greetings from here!"
 
-    tags = listOf("devtools", "auto", "include")
+    tags = listOf("devtools")
 
     pluginTags = mapOf(
-        "Init" to listOf(""),
-        "AutoModule" to listOf("")
+//        "DevTools" to listOf("devtools"),
+        "AutoInclude" to listOf("devtools", "auto", "include", "project")
     )
 }
 
@@ -157,7 +158,7 @@ tasks {
         if (options is StandardJavadocDocletOptions) {
             val standardJavadocDocletOptions = options as StandardJavadocDocletOptions
             standardJavadocDocletOptions.charSet("UTF-8")
-            standardJavadocDocletOptions.addStringOption("Xdoclint:none","-quiet")
+            standardJavadocDocletOptions.addStringOption("Xdoclint:none", "-quiet")
             standardJavadocDocletOptions.tags?.add("email")
             standardJavadocDocletOptions.tags?.add("time")
         }
@@ -166,7 +167,6 @@ tasks {
     withType<JavaCompile> {
         options.release.set(8)
         options.encoding = "UTF-8"
-//        options.compilerArgs.add("-parameters")
     }
 
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {

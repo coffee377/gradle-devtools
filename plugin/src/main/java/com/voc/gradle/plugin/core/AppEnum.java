@@ -14,5 +14,5 @@ public enum AppEnum {
     /**
      * 微服务
      */
-    MICRO_SERVICE,
+    MICRO,
 }

@@ -1,4 +1,4 @@
-package com.voc.gradle.plugin.dsl;
+package com.voc.gradle.plugin.extensions;
 
 import org.gradle.api.Project;
 import org.gradle.api.provider.Property;
@@ -8,11 +8,11 @@ import org.gradle.api.provider.Property;
  * @email coffee377@dingtalk.com
  * @time 2020/12/17 09:17
  */
-public class BootExtension implements IBootExtension {
+public class DefaultBootExtension implements SpringBootPlusExtension {
 
     private final Property<Boolean> library;
 
-    public BootExtension(Project project) {
+    public DefaultBootExtension(Project project) {
         this.library = project.getObjects().property(Boolean.class).value(false);
     }
 

@@ -1,6 +1,7 @@
 package com.voc.gradle.plugin
 
 import com.voc.gradle.ProjectInfo
+import com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension
 import com.voc.gradle.utils.FileOperationUtils
 import org.gradle.api.Plugin
 import org.gradle.api.file.ConfigurableFileTree
@@ -16,7 +17,9 @@ import javax.inject.Inject
  * @time 2022/11/06 10:21
  */
 
-open class DefaultAutoIncludeProjectExtension(objectFactory: ObjectFactory) : AutoIncludeProjectExtension {
+
+open class DefaultAutoIncludeProjectExtension(objectFactory: ObjectFactory) :
+    AutoIncludeProjectExtension {
 
     private val enabled: Property<Boolean>
 
@@ -80,11 +83,11 @@ class AutoIncludeProjectPlugin @Inject constructor(objectFactory: ObjectFactory)
         }
 
 
-        val versionCatalogs = settings.dependencyResolutionManagement.versionCatalogs
-        versionCatalogs.create("") {
-            it.version("", "")
-
-        }
+//        val versionCatalogs = settings.dependencyResolutionManagement.versionCatalogs
+//        versionCatalogs.create("testLibs") {
+////            it.version("", "")
+//
+//        }
 
         /* 常用插件管理 */
         settings.pluginManagement.plugins.apply {
@@ -98,7 +101,7 @@ class AutoIncludeProjectPlugin @Inject constructor(objectFactory: ObjectFactory)
             id("io.spring.dependency-management").version("1.0.11.RELEASE")
         }
 
-        /* 自动引入子项目 */
+        /* 配置评估后自动引入子项目 */
         settings.gradle.settingsEvaluated {
             autoInclude(it)
         }

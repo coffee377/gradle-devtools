@@ -1,4 +1,4 @@
-package com.voc.gradle.plugin.dsl;
+package com.voc.gradle.plugin.extensions;
 
 /**
  * @author Wu Yujie
@@ -6,7 +6,7 @@ package com.voc.gradle.plugin.dsl;
  * @time 2021/12/30 22:02
  * @since 0.0.3
  */
-public interface IBootExtension {
+public interface SpringBootPlusExtension {
 
     /**
      * 是否组件库开发
