@@ -1,7 +1,7 @@
 package io.github.coffee377.convention;
 
 import com.voc.gradle.plugin.AutoIncludeProjectPlugin;
-import com.voc.gradle.utils.GradleUtils;
+import io.github.coffee377.gradle.utils.GradleUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.gradle.api.Plugin;
 import org.gradle.api.initialization.Settings;

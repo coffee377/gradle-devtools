@@ -1,8 +1,8 @@
 package com.voc.gradle.plugin
 
 import com.voc.gradle.ProjectInfo
-import com.voc.gradle.plugin.extensions.AutoIncludeProjectExtension
-import com.voc.gradle.utils.FileOperationUtils
+import io.github.coffee377.gradle.plugin.extensions.AutoIncludeProjectExtension
+import io.github.coffee377.gradle.utils.FileOperationUtils
 import org.gradle.api.Plugin
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.initialization.Settings

@@ -2,7 +2,7 @@ rootProject.name = "gradle-devtools"
 
 include(":plugin")
 
-findProject(":plugin")?.name = "gradle-devtools-plugin"
+findProject(":plugin")?.name = "gradle-plugin"
 
 /* 插件管理 */
 pluginManagement {

@@ -90,7 +90,7 @@ dependencies {
     implementation("org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.3.2")
     implementation("org.springframework:spring-core:5.3.23")
     implementation("de.skuzzle:semantic-version:2.1.1")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+//    implementation("org.springframework.boot:spring-boot-starter-security")
 
 }
 
@@ -140,13 +140,11 @@ pluginBundle {
     website = "https://github.com/coffee377/gradle-devtools"
     vcsUrl = "https://github.com/coffee377/gradle-devtools.git"
 
-//    description = "Greetings from here!"
-
     tags = listOf("devtools")
 
     pluginTags = mapOf(
 //        "DevTools" to listOf("devtools"),
-        "AutoInclude" to listOf("devtools", "auto", "include", "project")
+        "AutoInclude" to listOf("auto", "include", "project")
     )
 }
 
@@ -180,7 +178,6 @@ publishing {
             }
 
             url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-${versionType}")
-            println("publish to => http://nexus.jqk8s.jqsoft.net/repository/maven-${versionType}")
 
             credentials {
                 username = System.getenv("DEV_OPTS_JQ_USERNAME")

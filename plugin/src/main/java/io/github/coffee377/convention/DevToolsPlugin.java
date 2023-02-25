@@ -1,11 +1,11 @@
 package io.github.coffee377.convention;
 
-import com.voc.gradle.plugin.BasePluginAction;
-import com.voc.gradle.plugin.MavenPlugin;
-import com.voc.gradle.plugin.extensions.DefaultDevToolsExtension;
-import com.voc.gradle.plugin.extensions.DevToolsExtension;
-import com.voc.gradle.plugin.ide.IntegratedDevelopmentEnvironmentPlugin;
-import com.voc.gradle.utils.GradleUtils;
+import io.github.coffee377.gradle.plugin.BasePluginAction;
+import io.github.coffee377.gradle.plugin.MavenPlugin;
+import io.github.coffee377.gradle.plugin.extensions.DefaultDevToolsExtension;
+import io.github.coffee377.gradle.plugin.extensions.DevToolsExtension;
+import io.github.coffee377.gradle.plugin.ide.IntegratedDevelopmentEnvironmentPlugin;
+import io.github.coffee377.gradle.utils.GradleUtils;
 import lombok.Getter;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
