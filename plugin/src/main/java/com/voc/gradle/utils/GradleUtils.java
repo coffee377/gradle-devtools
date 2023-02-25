@@ -10,13 +10,13 @@ import org.gradle.util.GradleVersion;
  */
 public class GradleUtils {
 
-    public static final String MIN_GRADLE_VERSION = "7.0";
+    public static final String MIN_GRADLE_VERSION = "7.4";
 
     public static void verifyGradleVersion() {
         GradleVersion currentVersion = GradleVersion.current();
         if (currentVersion.compareTo(GradleVersion.version(MIN_GRADLE_VERSION)) < 0) {
-            throw new GradleException("Devtools plugin requires Gradle 7.x "
-                    + "The current version is " + currentVersion);
+            throw new GradleException("Devtools plugin requires Gradle" + MIN_GRADLE_VERSION
+                    + " The current version is " + currentVersion);
         }
     }
 }

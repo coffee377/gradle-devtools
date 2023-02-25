@@ -143,8 +143,8 @@ public class DefaultDevToolsExtension implements DevToolsExtension {
     }
 
     @Override
-    public boolean useJavaTools() {
-        return false;
+    public void useJavaTools() {
+
     }
 
     @Override
@@ -158,12 +158,12 @@ public class DefaultDevToolsExtension implements DevToolsExtension {
     }
 
     @Override
-    public boolean useJunit() {
-        return false;
+    public void useJunit() {
+
     }
 
     @Override
-    public void junit(boolean enabled) {
+    public void junit(String version) {
 
     }
 }

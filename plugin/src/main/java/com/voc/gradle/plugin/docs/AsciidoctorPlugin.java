@@ -60,7 +60,7 @@ import java.util.Map;
  * @author Steve Riesenberg
  */
 public class AsciidoctorPlugin implements Plugin<Project> {
-	private static final String ASCIIDOCTORJ_VERSION = "2.4.3";
+	private static final String ASCIIDOCTORJ_VERSION = "2.5.4";
 	private static final String EXTENSIONS_CONFIGURATION_NAME = "asciidoctorExtensions";
 
 	@Override
@@ -103,7 +103,7 @@ public class AsciidoctorPlugin implements Plugin<Project> {
 			configuration.getDependencies().add(project.getDependencies()
 					.create("io.spring.asciidoctor.backends:spring-asciidoctor-backends:0.0.3"));
 			configuration.getDependencies()
-					.add(project.getDependencies().create("org.asciidoctor:asciidoctorj-pdf:1.5.3"));
+					.add(project.getDependencies().create("org.asciidoctor:asciidoctorj-pdf:1.6.2"));
 		});
 	}
 
@@ -112,6 +112,7 @@ public class AsciidoctorPlugin implements Plugin<Project> {
 		configureCommonAttributes(asciidoctorTask);
 		configureOptions(asciidoctorTask);
 		asciidoctorTask.baseDirFollowsSourceDir();
+//        asciidoctorTask.sources();
 		asciidoctorTask.resources((resourcesSpec) -> {
 			resourcesSpec.from(asciidoctorTask.getSourceDir(), (resourcesSrcDirSpec) -> {
 				// Not using intermediateWorkDir.

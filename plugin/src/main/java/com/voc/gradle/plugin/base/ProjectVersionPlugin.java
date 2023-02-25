@@ -4,6 +4,8 @@ import de.skuzzle.semantic.Version;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 
+import java.util.regex.Pattern;
+
 /**
  * @author WuYujie
  * @email coffee377@dingtalk.com
@@ -26,6 +28,11 @@ public class ProjectVersionPlugin implements Plugin<Project> {
             } else {
                 project.setVersion(version2.toString());
             }
+
+            String v = project.getVersion().toString();
+
+            Pattern pattern = Pattern.compile("^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
+            String group = pattern.matcher(v).group(1);
         }
     }
 }

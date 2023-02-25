@@ -3,6 +3,7 @@ plugins {
     `java-library`
     id("org.jetbrains.kotlin.jvm")
     id("com.gradle.plugin-publish") version "1.0.0"
+    id("io.spring.dependency-management") version "1.1.0"
 }
 
 group = "io.github.coffee377"
@@ -37,6 +38,20 @@ configurations {
     }
 }
 
+dependencyManagement {
+
+    val springbootversion = "2.5.14"
+    imports {
+        mavenBom("org.springframework.boot:spring-boot-dependencies:$springbootversion") {
+            bomProperty("spring-boot.version", "2.5.14")
+//            bomProperty("spring-security.version", "5.7.3")
+        }
+    }
+    pomConfigurer.apply {
+//        configurePom(p->{})
+    }
+}
+
 sourceSets {
     main {
 
@@ -60,6 +75,7 @@ repositories {
     maven {
         isAllowInsecureProtocol = true
         url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-public/")
+
     }
     maven { url = uri("https://maven.aliyun.com/repository/public/") }
     maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
@@ -74,6 +90,8 @@ dependencies {
     implementation("org.asciidoctor:asciidoctor-gradle-jvm-pdf:3.3.2")
     implementation("org.springframework:spring-core:5.3.23")
     implementation("de.skuzzle:semantic-version:2.1.1")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
 }
 
 testing {
@@ -137,6 +155,37 @@ publishing {
         maven {
             name = "local"
             url = uri("${rootProject.buildDir}/publications/repos")
+        }
+    }
+
+    repositories {
+        maven {
+            name = "JinQiSoftNexus3"
+            isAllowInsecureProtocol = true
+            val matchers = Regex(
+                "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-(" +
+                        "(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?" +
+                        "(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?\$",
+                setOf(RegexOption.IGNORE_CASE, RegexOption.MULTILINE)
+            ).find(project.version.toString())
+
+            val preRelease: String = matchers?.groups?.get(4)?.value ?: ""
+            val build = matchers?.groups?.get(5)?.value ?: ""
+
+            val versionType = when {
+                Regex("^SNAPSHOT.*", RegexOption.IGNORE_CASE).matches(preRelease) -> "snapshots"
+                Regex("^(alpha|beta).*", RegexOption.IGNORE_CASE).matches(preRelease) -> "prerelease"
+                Regex("^(M|RC).*", RegexOption.IGNORE_CASE).matches(preRelease) -> "releases"
+                else -> "prerelease"
+            }
+
+            url = uri("http://nexus.jqk8s.jqsoft.net/repository/maven-${versionType}")
+            println("publish to => http://nexus.jqk8s.jqsoft.net/repository/maven-${versionType}")
+
+            credentials {
+                username = System.getenv("DEV_OPTS_JQ_USERNAME")
+                password = System.getenv("DEV_OPTS_JQ_PASSWORD")
+            }
         }
     }
 }

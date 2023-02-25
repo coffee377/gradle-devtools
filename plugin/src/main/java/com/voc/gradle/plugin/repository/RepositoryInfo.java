@@ -19,25 +19,6 @@ public interface RepositoryInfo extends Named, Serializable {
     String getUrl();
 
     /**
-     * 根据 {@link VersionType} 获取仓库地址
-     *
-     * @param versionType
-     * @return
-     */
-    String getUrl(VersionType versionType);
-
-    /**
-     * 设置仓库地址
-     *
-     * @param url String
-     * @see #url(String)
-     * @since 0.0.1
-     * @deprecated
-     */
-    @Deprecated
-    void setUrl(String url);
-
-    /**
      * 设置仓库地址
      *
      * @param url String
@@ -46,37 +27,12 @@ public interface RepositoryInfo extends Named, Serializable {
     void url(String url);
 
     /**
-     * 配置不同类型仓库地址
-     *
-     * @param versionType
-     * @param url
-     */
-    void url(VersionType versionType, String url);
-
-    /**
-     * 移除指定配置 URL
-     *
-     * @param versionType
-     */
-    void removeUrl(VersionType versionType);
-
-    /**
      * 用户名
      *
      * @return String
      * @since 0.0.1
      */
     String getUsername();
-
-    /**
-     * 设置用户名
-     *
-     * @param username String
-     * @see #username(String)
-     * @since 0.0.1
-     * @deprecated
-     */
-    @Deprecated void setUsername(String username);
 
     /**
      * 设置用户名
@@ -94,15 +50,6 @@ public interface RepositoryInfo extends Named, Serializable {
      */
     String getPassword();
 
-    /**
-     * 设置密码
-     *
-     * @param password String
-     * @see #password(String)
-     * @since 0.0.1
-     * @deprecated
-     */
-    @Deprecated void setPassword(String password);
 
     /**
      * 设置密码
@@ -119,16 +66,6 @@ public interface RepositoryInfo extends Named, Serializable {
      * @since 0.0.1
      */
     boolean isAllowPublish();
-
-    /**
-     * 设置是否运行发布到此仓库
-     *
-     * @param allowPublish boolean
-     * @see #publish(boolean)
-     * @since 0.0.1
-     * @deprecated
-     */
-    @Deprecated void setAllowPublish(boolean allowPublish);
 
     /**
      * 设置是否允许发布至此仓库

@@ -13,7 +13,7 @@ import org.gradle.api.initialization.Settings;
  */
 @Slf4j
 public class AutoIncludePlugin implements Plugin<Settings> {
-    public static final String ID = "com.voc.auto-include";
+    public static final String ID = "io.github.coffee377.auto-include";
 
     @Override
     public void apply(Settings settings) {

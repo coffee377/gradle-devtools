@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
  */
 @Getter
 public class DevToolsPlugin implements Plugin<Project> {
-    public static final String ID = "com.voc.devtools";
+    public static final String ID = "io.github.coffee377.devtools";
 
     @Override
     public void apply(@NotNull Project project) {

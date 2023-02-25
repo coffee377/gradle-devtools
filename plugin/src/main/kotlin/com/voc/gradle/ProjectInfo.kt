@@ -35,6 +35,7 @@ class ProjectInfo(rootFile: File, buildFile: File) : Comparable<ProjectInfo> {
         val isKotlin = buildFile.name.endsWith(".kts")
         val paths = dir.relativeTo(rootFile).path.split(File.separator)
         path = ":${paths.joinToString(":")}"
+
         name = if (!isDefaultName) {
             if (isKotlin) {
                 buildFile.name.replace(".gradle.kts", "")

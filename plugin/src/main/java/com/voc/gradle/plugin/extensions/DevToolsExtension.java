@@ -9,7 +9,7 @@ import com.voc.gradle.core.DevType;
  * @since 0.1.1
  */
 public interface DevToolsExtension {
-    String NAME = "devopts";
+    String NAME = "devOpts";
 
     /**
      * 模块类型
@@ -89,7 +89,7 @@ public interface DevToolsExtension {
     /**
      * 使用 java tools
      */
-    boolean useJavaTools();
+    void useJavaTools();
 
     /**
      * 使用 lombok 注解处理器
@@ -105,16 +105,14 @@ public interface DevToolsExtension {
 
     /**
      * 是否开启单元测试
-     *
-     * @return boolean
      */
-    boolean useJunit();
+    void useJunit();
 
     /**
      * 设置是否启用 Junit 单元测试
      *
-     * @param enabled boolean
+     * @param version 版本
      */
-    void junit(boolean enabled);
+    void junit(String version);
 
 }

@@ -1,5 +1,6 @@
 package com.voc.gradle.utils;
 
+import com.voc.gradle.plugin.embedded.ExtraProps;
 import lombok.extern.slf4j.Slf4j;
 import org.gradle.api.Project;
 import org.gradle.api.initialization.Settings;
@@ -59,23 +60,23 @@ public class ExtraPropsUtils {
         return (boolean) getValue(project, keyName, defaultValue);
     }
 
-//    /**
-//     * 获取属性值
-//     *
-//     * @param extension 扩展属性
-//     * @param props     属性枚举
-//     * @return Object
-//     */
-//    public static Object getValue(ExtraPropertiesExtension extension, ExtraProps props) {
-//        return getValue(extension, props.getKey(), props.getValue());
-//    }
-//
-//    public static String getStringValue(Project project, ExtraProps props) {
-//        return getStringValue(project, props.getKey(), props.getValue().toString());
-//    }
-//
-//    public static boolean getBooleanValue(Project project, ExtraProps props) {
-//        return (boolean) getBooleanValue(project, props.getKey(), Boolean.parseBoolean(props.getValue().toString()));
-//    }
+    /**
+     * 获取属性值
+     *
+     * @param extension 扩展属性
+     * @param props     属性枚举
+     * @return Object
+     */
+    public static Object getValue(ExtraPropertiesExtension extension, ExtraProps props) {
+        return getValue(extension, props.getKey(), props.getValue());
+    }
+
+    public static String getStringValue(Project project, ExtraProps props) {
+        return getStringValue(project, props.getKey(), props.getValue().toString());
+    }
+
+    public static boolean getBooleanValue(Project project, ExtraProps props) {
+        return (boolean) getBooleanValue(project, props.getKey(), Boolean.parseBoolean(props.getValue().toString()));
+    }
 
 }
